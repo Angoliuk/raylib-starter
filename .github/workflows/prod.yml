@@ -1,0 +1,222 @@
+name: prod
+
+on:
+  push:
+    branches:
+      - 'master'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  linting:
+    name: 'Linting ${{ matrix.config.name }}'
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {
+              name: 'Ubuntu',
+              wasm: 'false',
+              projectRoot: '/home/runner/work/dreich/dreich',
+              artifact: '${{ github.event.pull_request.title }}',
+              os: 'ubuntu-latest',
+              conanBuildType: 'Debug',
+              cc: 'clang',
+              cxx: 'clang++',
+              isRelease: true,
+            }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Env
+        uses: './.github/workflows/utils/json-to-env'
+        with:
+          json: ${{ toJSON(matrix.config) }}
+      - name: Native
+        uses: './.github/workflows/modules/native/lint'
+      - name: Engine
+        uses: './.github/workflows/modules/engine/lint'
+      - name: Linting commit
+        uses: './.github/workflows/utils/commit'
+
+  testing:
+    name: 'Testing: ${{ matrix.config.name }}'
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {
+              name: 'MacOS',
+              wasm: 'false',
+              projectRoot: '/Users/runner/work/dreich/dreich',
+              artifact: '${{ github.event.pull_request.title }}',
+              os: 'macos-14',
+              conanBuildType: 'Debug',
+              cc: 'clang',
+              cxx: 'clang++',
+              isRelease: true,
+            }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Env
+        uses: './.github/workflows/utils/json-to-env'
+        with:
+          json: ${{ toJSON(matrix.config) }}
+      - uses: ./.github/workflows/utils/setup-base-libs
+      - name: Ctest
+        shell: bash
+        run: |
+          export CC=${{ env.cc }}
+          export CXX=${{ env.cxx }}
+          wm run ctest
+      - name: Engine
+        uses: './.github/workflows/modules/engine/test'
+
+  building:
+    name: 'Build: ${{ matrix.config.name }}'
+    runs-on: ${{ matrix.config.os }}
+    needs:
+      - linting
+      - testing
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {
+              name: 'Windows',
+              wasm: 'false',
+              projectRoot: 'D:/a/dreich',
+              artifact: '${{ github.event.pull_request.title }}',
+              os: 'windows-latest',
+              conanBuildType: 'Release',
+              cc: 'cl',
+              cxx: 'cl',
+              isRelease: true,
+            }
+          - {
+              name: 'Ubuntu',
+              wasm: 'false',
+              projectRoot: '/home/runner/work/dreich/dreich',
+              artifact: '${{ github.event.pull_request.title }}',
+              os: 'ubuntu-latest',
+              conanBuildType: 'Release',
+              cc: 'clang',
+              cxx: 'clang++',
+              isRelease: true,
+            }
+          - {
+              name: 'MacOS',
+              wasm: 'false',
+              projectRoot: '/Users/runner/work/dreich/dreich',
+              artifact: '${{ github.event.pull_request.title }}',
+              os: 'macos-14',
+              conanBuildType: 'Release',
+              cc: 'clang',
+              cxx: 'clang++',
+              isRelease: true,
+            }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Env
+        uses: './.github/workflows/utils/json-to-env'
+        with:
+          json: ${{ toJSON(matrix.config) }}
+      - uses: ./.github/workflows/utils/setup-base-libs
+      - name: Native
+        uses: './.github/workflows/modules/native/build'
+      - name: Engine
+        uses: './.github/workflows/modules/engine/build'
+      - name: Cpack build
+        shell: bash
+        run: |
+          wm run conan-deploy
+          wm run cpack-build -bt ${{ env.conanBuildType }}
+          mv $(pwd)/releases/wind.zip $(pwd)/releases/${{matrix.config.os}}.zip
+
+      - name: Check if release exists
+        id: check_release
+        shell: bash
+        run: |
+          if gh release view $sha > /dev/null 2>&1; then
+            gh release upload $sha $(pwd)/releases/${{matrix.config.os}}.zip
+          else
+            gh release create $sha --title "Release $artifact" --generate-notes --latest
+            gh release upload $sha $(pwd)/releases/${{matrix.config.os}}.zip
+          fi
+
+  building_wasm:
+    name: 'Build wasm: ${{ matrix.config.name }}'
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {
+              wasm: 'true',
+              name: 'Windows',
+              projectRoot: 'D:/a/dreich',
+              artifact: 'dreich-windows',
+              os: 'windows-latest',
+              conanBuildType: 'Debug',
+              cc: 'emcc',
+              cxx: 'em++',
+              isRelease: false,
+            }
+          - {
+              wasm: 'true',
+              name: 'Ubuntu',
+              projectRoot: '/home/runner/work/dreich/dreich',
+              artifact: 'dreich-linux',
+              os: 'ubuntu-latest',
+              conanBuildType: 'Debug',
+              cc: 'emcc',
+              cxx: 'em++',
+              isRelease: false,
+            }
+          - {
+              wasm: 'true',
+              name: 'MacOS',
+              projectRoot: '/Users/runner/work/dreich/dreich',
+              artifact: 'dreich-macos',
+              os: 'macos-14',
+              conanBuildType: 'Debug',
+              cc: 'emcc',
+              cxx: 'em++',
+              isRelease: false,
+            }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Env
+        uses: './.github/workflows/utils/json-to-env'
+        with:
+          json: ${{ toJSON(matrix.config) }}
+      - uses: ./.github/workflows/utils/setup-base-libs
+      - name: Native
+        uses: './.github/workflows/modules/native/build'
+      - name: Engine
+        uses: './.github/workflows/modules/engine/build'

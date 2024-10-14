@@ -1,0 +1,47 @@
+name: Setup conan
+description: Setup conan
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install conan
+      if: env.os != 'macos-14'
+      uses: turtlebrowser/get-conan@main
+      with:
+        version: 2.1.0
+
+    - name: Config profiles
+      run: |
+        conan profile detect --force --name wasm
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          cp conan/profiles/linux/* /home/runner/.conan2/profiles
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+          cp conan/profiles/windows/* C:\\Users\\runneradmin\\.conan2\\profiles
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          cp conan/profiles/macos/* /Users/runner/.conan2/profiles
+        else
+          echo "$RUNNER_OS not supported"
+          exit 1
+        fi
+      shell: bash
+
+    - name: Setup conan cache
+      uses: ./.github/workflows/utils/cache/get-conan-cache
+
+    - name: Install dependencies
+      if: env.wasm == 'false'
+      shell: bash
+      run: |
+        export CC=${{ env.cc }}
+        export CXX=${{ env.cxx }}
+        wm run conan-install -bt ${{ env.conanBuildType }}
+
+    - name: Install dependencies
+      if: env.wasm == 'true'
+      shell: bash
+      run: |
+        export CC=${{ env.cc }}
+        export CXX=${{ env.cxx }}
+        wm run conan-install -bt ${{ env.conanBuildType }} -w
+
+        

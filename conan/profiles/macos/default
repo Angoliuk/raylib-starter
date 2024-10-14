@@ -1,0 +1,16 @@
+[settings]
+arch=armv8
+compiler=apple-clang
+compiler.cppstd=gnu23
+compiler.libcxx=libc++
+compiler.version=15
+os=Macos
+
+[conf]
+tools.system.package_manager:mode=install
+tools.system.package_manager:sudo=True
+tools.cmake.cmaketoolchain:generator=Unix Makefiles
+
+[buildenv]
+CC=clang
+CXX=clang++

@@ -1,0 +1,12 @@
+name: Setup env
+description: Setup env
+
+runs:
+  using: "composite"
+  steps:
+    - name: Add env file
+      run: |
+        touch .env
+
+        cat .env
+      shell: bash

@@ -1,0 +1,30 @@
+name: Build native
+description: Build native
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Prepare native env
+      uses: ./.github/workflows/modules/native/setup-env
+
+    - name: Build native with wm
+      if: env.wasm == 'false'
+      shell: bash
+      run: |
+        export CC=${{ env.cc }}
+        export CXX=${{ env.cxx }}
+
+        wm run cmake-build -bt ${{ env.conanBuildType }}
+
+    - name: Build native wasm with wm
+      if: env.wasm == 'true'
+      shell: bash
+      run: |
+        export CC=${{ env.cc }}
+        export CXX=${{ env.cxx }}
+
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          source "/home/runner/work/dreich/dreich/emsdk/emsdk_env.sh"
+        fi
+
+        wm run cmake-build -bt ${{ env.conanBuildType }} -w

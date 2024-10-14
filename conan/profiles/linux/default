@@ -1,0 +1,16 @@
+[settings]
+arch=x86_64
+compiler=clang
+compiler.cppstd=gnu23
+compiler.libcxx=libc++
+compiler.version=14
+os=Linux
+
+[conf]
+tools.system.package_manager:mode=install
+tools.system.package_manager:sudo=True
+tools.cmake.cmaketoolchain:generator=Unix Makefiles
+
+[buildenv]
+CC=clang
+CXX=clang++
