@@ -18,7 +18,7 @@ done
 response=$(gh api \
   -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
-  /repos/WindEntertainment/dreich/actions/caches)
+  /repos/Angoliuk/raylib-starter/actions/caches)
 
 if [ $? -eq 0 ]; then
   cache_ids=$(echo "$response" | jq -r '.actions_caches[].id')
@@ -30,7 +30,7 @@ if [ $? -eq 0 ]; then
       --method DELETE \
       -H "Accept: application/vnd.github+json" \
       -H "X-GitHub-Api-Version: 2022-11-28" \
-      /repos/WindEntertainment/dreich/actions/caches/"$cache_id")
+      /repos/Angoliuk/raylib-starter/actions/caches/"$cache_id")
 
     echo "$delete_result"
   done
