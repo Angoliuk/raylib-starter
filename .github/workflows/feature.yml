@@ -46,10 +46,8 @@ jobs:
         uses: './.github/workflows/utils/json-to-env'
         with:
           json: ${{ toJSON(matrix.config) }}
-      - name: Native
+      - name: Game
         uses: './.github/workflows/modules/game/lint'
-      - name: Engine
-        uses: './.github/workflows/modules/engine/lint'
       - name: Linting commit
         uses: './.github/workflows/utils/commit'
 
@@ -88,8 +86,6 @@ jobs:
           export CC=${{ env.cc }}
           export CXX=${{ env.cxx }}
           wm run ctest
-      - name: Engine
-        uses: './.github/workflows/modules/engine/test'
 
   building:
     name: 'Build: ${{ matrix.config.name }}'
@@ -142,10 +138,8 @@ jobs:
         with:
           json: ${{ toJSON(matrix.config) }}
       - uses: ./.github/workflows/utils/setup-base-libs
-      - name: Native
+      - name: Game
         uses: './.github/workflows/modules/game/build'
-      - name: Engine
-        uses: './.github/workflows/modules/engine/build'
 
   building_wasm:
     name: 'Build wasm: ${{ matrix.config.name }}'
@@ -198,7 +192,5 @@ jobs:
         with:
           json: ${{ toJSON(matrix.config) }}
       - uses: ./.github/workflows/utils/setup-base-libs
-      - name: Native
+      - name: Game
         uses: './.github/workflows/modules/game/build'
-      - name: Engine
-        uses: './.github/workflows/modules/engine/build'
