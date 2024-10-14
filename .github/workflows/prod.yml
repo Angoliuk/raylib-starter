@@ -45,7 +45,7 @@ jobs:
         with:
           json: ${{ toJSON(matrix.config) }}
       - name: Native
-        uses: './.github/workflows/modules/native/lint'
+        uses: './.github/workflows/modules/game/lint'
       - name: Engine
         uses: './.github/workflows/modules/engine/lint'
       - name: Linting commit
@@ -144,7 +144,7 @@ jobs:
           json: ${{ toJSON(matrix.config) }}
       - uses: ./.github/workflows/utils/setup-base-libs
       - name: Native
-        uses: './.github/workflows/modules/native/build'
+        uses: './.github/workflows/modules/game/build'
       - name: Engine
         uses: './.github/workflows/modules/engine/build'
       - name: Cpack build
@@ -220,6 +220,6 @@ jobs:
           json: ${{ toJSON(matrix.config) }}
       - uses: ./.github/workflows/utils/setup-base-libs
       - name: Native
-        uses: './.github/workflows/modules/native/build'
+        uses: './.github/workflows/modules/game/build'
       - name: Engine
         uses: './.github/workflows/modules/engine/build'

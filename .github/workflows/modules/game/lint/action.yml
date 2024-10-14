@@ -7,7 +7,7 @@ runs:
     - name: Lint
       uses: DoozyX/clang-format-lint-action@v0.17
       with:
-        source: './native'
+        source: './game'
         extensions: 'h,cpp,hpp'
         clangFormatVersion: 17
         inplace: true

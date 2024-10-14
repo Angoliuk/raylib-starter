@@ -5,7 +5,7 @@ runs:
   using: 'composite'
   steps:
     - name: Prepare native env
-      uses: ./.github/workflows/modules/native/setup-env
+      uses: ./.github/workflows/modules/game/setup-env
 
     - name: Build native with wm
       if: env.wasm == 'false'

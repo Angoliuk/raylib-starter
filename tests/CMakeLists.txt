@@ -1,3 +1,3 @@
 project(tests)
 
-add_subdirectory(./native/)
+add_subdirectory(./game/)
