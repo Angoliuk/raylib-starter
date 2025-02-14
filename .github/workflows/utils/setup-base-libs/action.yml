@@ -49,12 +49,17 @@ runs:
     - name: Setup wm
       shell: bash
       run: |
-        mkdir -p $(pwd)/apps/usr/local/bin
-        echo "$(pwd)/apps/usr/local/bin" >> $GITHUB_PATH
+        git clone https://github.com/Angoliuk/wm
         cd wm
-        chmod +x config.sh
-        ./config.sh
-        echo "$(pwd)" >> $GITHUB_PATH
+        chmod +x core/install.sh
+        ./core/install.sh
+
+        # mkdir -p $(pwd)/apps/usr/local/bin
+        # echo "$(pwd)/apps/usr/local/bin" >> $GITHUB_PATH
+        # cd wm
+        # chmod +x config.sh
+        # ./config.sh
+        # echo "$(pwd)" >> $GITHUB_PATH
 
     - name: Setup conan base
       uses: ./.github/workflows/utils/setup-conan
