@@ -12,6 +12,7 @@ root=""
 while [[ "$#" -gt 0 ]]; do
   case $1 in
     -bt|--build-type) build_type="$2"; shift ;;
+    -wt|--with-testing) flags+=("-DENABLE_TESTS=ON"); ;;
     -wd|--with-dotnet) flags+=("-DBUILD_DOTNET=ON"); ;;
     -w|--wasm) wasm=true; flags+=("-DBUILD_WASM=ON"); ;;
     --root) root="$2"; shift ;;
@@ -23,12 +24,13 @@ done
 cd "$root" || exit
 
 if [ $wasm = true ]; then
-  cmake -G "Unix Makefiles" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE="$build_type" -DCMAKE_TOOLCHAIN_FILE="$root/build/web/build/$build_type/generators/conan_toolchain.cmake" -S"$root" -B"$root/build/web/build/$build_type" "${flags[@]}"
+  cmake -G "Unix Makefiles" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE="$build_type" -DCMAKE_TOOLCHAIN_FILE="$root/build/web/build/$build_type/generators/conan_toolchain.cmake" -S"$root" -B"$root/build/web/build/$build_type" "${flags[@]}"
 else
   if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    cmake -G "Visual Studio 17 2022" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE="$build_type" -DCMAKE_TOOLCHAIN_FILE="$root/build/app/build/generators/conan_toolchain.cmake" -S"$root" -B"$root/build/app/build/$build_type" "${flags[@]}"
+    cmake -G "Visual Studio 17 2022" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE="$build_type" -DCMAKE_TOOLCHAIN_FILE="$root/build/app/build/generators/conan_toolchain.cmake" -S"$root" -B"$root/build/app/build/$build_type" "${flags[@]}"
   else
-    cmake -G "Unix Makefiles" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE="$build_type" -DCMAKE_TOOLCHAIN_FILE="$root/build/app/build/$build_type/generators/conan_toolchain.cmake" -S"$root" -B"$root/build/app/build/$build_type" "${flags[@]}"
+    # cmake -G "Unix Makefiles" -DCMAKE_C_COMPILER=/opt/homebrew/opt/gcc/bin/gcc-14 -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/gcc/bin/gcc-14 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE="$build_type" -DCMAKE_TOOLCHAIN_FILE="$root/build/app/build/$build_type/generators/conan_toolchain.cmake" -S"$root" -B"$root/build/app/build/$build_type" "${flags[@]}"
+    cmake -G "Unix Makefiles" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE="$build_type" -DCMAKE_TOOLCHAIN_FILE="$root/build/app/build/$build_type/generators/conan_toolchain.cmake" -S"$root" -B"$root/build/app/build/$build_type" "${flags[@]}"
   fi
 fi
 
