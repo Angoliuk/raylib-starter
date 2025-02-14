@@ -1,7 +1,0 @@
-file - FileName
-property - PropertyName
-variable - variableName
-field - fieldName
-const - constName
-interface - IInterface
-class - ClassName
