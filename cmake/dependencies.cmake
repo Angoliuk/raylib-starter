@@ -6,5 +6,5 @@ if (APPLE)
   target_link_libraries(${PROJECT_NAME} PRIVATE "-framework OpenGL")
 endif()
 
-find_package(fmt CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt-header-only)
+find_package(spdlog REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)

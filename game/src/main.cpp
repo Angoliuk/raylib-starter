@@ -1,3 +1,4 @@
+#include "game/utils.hpp"
 #include "raylib.h"
 
 int main() {

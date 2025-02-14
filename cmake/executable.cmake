@@ -1,6 +1,6 @@
 
 set(HEADERS
-  ./game/include/game/logger.hpp
+  ./game/include/game/utils.hpp
 )
 
 set(SOURCES
