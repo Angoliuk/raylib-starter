@@ -20,10 +20,6 @@ class MyConanFile(ConanFile):
         self.requires("raylib/5.0")
         self.requires("spdlog/1.13.0")
 
-    options = {}
-
-    default_options = {}
-
     def layout(self):
         cmake_layout(self)
 
