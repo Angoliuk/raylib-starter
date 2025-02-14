@@ -18,9 +18,9 @@ done
 cd "$root" || exit
 
 if [ $wasm = true ]; then
-  conan install . -o *:shared=False --build=missing --deployer-package=wind --deployer=full_deploy --deployer-folder="$root"/conan-deploy/web --profile wasm
+  conan install . -o *:shared=False --build=missing --deployer-package=game --deployer=full_deploy --deployer-folder="$root"/conan-deploy/web --profile wasm
 else
-  conan install . --build=missing --deployer-package=wind --deployer=full_deploy --deployer-folder="$root"/conan-deploy/app
+  conan install . --build=missing --deployer-package=game --deployer=full_deploy --deployer-folder="$root"/conan-deploy/app
 fi
 
 cd "$call_dir" || exit

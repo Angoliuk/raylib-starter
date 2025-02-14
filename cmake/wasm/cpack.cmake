@@ -1,7 +1,7 @@
 set(CPACK_GENERATOR "ZIP")
-set(CPACK_PACKAGE_FILE_NAME "wind-wasm")
+set(CPACK_PACKAGE_FILE_NAME "game-wasm")
 
-install(TARGETS wind LIBRARY DESTINATION .)
+install(TARGETS game LIBRARY DESTINATION .)
 
 file(GLOB_RECURSE CONAN_FILES "conan-deploy/web/full_deploy/host/**/*.a")
 foreach(conan_file ${CONAN_FILES})

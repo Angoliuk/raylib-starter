@@ -1,7 +1,7 @@
 set(CPACK_GENERATOR "ZIP")
-set(CPACK_PACKAGE_FILE_NAME "wind")
+set(CPACK_PACKAGE_FILE_NAME "game")
 
-install(TARGETS wind LIBRARY DESTINATION .)
+install(TARGETS game LIBRARY DESTINATION .)
 
 file(GLOB_RECURSE CONAN_FILES "conan-deploy/app/full_deploy/host/**/*.dylib")
 foreach(conan_file ${CONAN_FILES})

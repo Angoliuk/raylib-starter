@@ -109,7 +109,7 @@ jobs:
         run: |
           wm run conan-deploy
           wm run cpack-build -bt ${{ env.conanBuildType }}
-          mv $(pwd)/releases/wind.zip $(pwd)/releases/${{matrix.config.os}}.zip
+          mv $(pwd)/releases/game.zip $(pwd)/releases/${{matrix.config.os}}.zip
 
       - name: Check if release exists
         id: check_release

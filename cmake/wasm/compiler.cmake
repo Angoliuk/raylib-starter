@@ -4,7 +4,7 @@ set(CMAKE_CXX_COMPILER "em++")
 ###===================================================================================##
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-  OUTPUT_NAME "wind"
+  OUTPUT_NAME "game"
   SUFFIX ".wasm"
   LINK_FLAGS "-s WASM=1 -s SIDE_MODULE=1 -s EXPORT_ALL=1 -O3 --bind"
   # -s EXPORT_ALL=1

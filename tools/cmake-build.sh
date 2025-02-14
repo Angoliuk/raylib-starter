@@ -3,7 +3,7 @@
 source "$(dirname "$0")/global.sh"
 
 build_type=Release
-target=wind
+target=game
 skip_configure=false
 flags=()
 wasm=false

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(wind)
+project(game)
 
 message("Building with CMake version: ${CMAKE_VERSION}")
 message("WASM: ${BUILD_WASM}")
