@@ -12,6 +12,10 @@ class MyConanFile(ConanFile):
     generators = "CMakeDeps", "CMakeToolchain"
     exports_sources = "*"
 
+    default_options = {
+        "fmt/*:header_only": True,
+    }
+
     def requirements(self):
         self.requires("raylib/5.0")
         self.requires("spdlog/1.13.0")
