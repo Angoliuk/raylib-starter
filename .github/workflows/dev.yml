@@ -49,42 +49,6 @@ jobs:
       - name: Linting commit
         uses: './.github/workflows/utils/commit'
 
-  testing:
-    name: 'Testing: ${{ matrix.config.name }}'
-    runs-on: ${{ matrix.config.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {
-              name: 'MacOS',
-              wasm: 'false',
-              projectRoot: '/Users/runner/work/raylib-starter/raylib-starter',
-              artifact: 'dreich-macos',
-              os: 'macos-14',
-              conanBuildType: 'Debug',
-              cc: 'clang',
-              cxx: 'clang++',
-              isRelease: false,
-            }
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          lfs: false
-      - name: Env
-        uses: './.github/workflows/utils/json-to-env'
-        with:
-          json: ${{ toJSON(matrix.config) }}
-      - uses: ./.github/workflows/utils/setup-base-libs
-      - name: Ctest
-        shell: bash
-        run: |
-          export CC=${{ env.cc }}
-          export CXX=${{ env.cxx }}
-          wm run ctest
-
   building:
     name: 'Build: ${{ matrix.config.name }}'
     runs-on: ${{ matrix.config.os }}

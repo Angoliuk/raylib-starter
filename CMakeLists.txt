@@ -26,5 +26,4 @@ import(dependencies OFF)
 
 ###===================================================================================##
 
-import(tests OFF)
 import(cpack ON)

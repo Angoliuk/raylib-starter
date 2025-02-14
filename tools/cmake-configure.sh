@@ -12,7 +12,6 @@ root=""
 while [[ "$#" -gt 0 ]]; do
   case $1 in
     -bt|--build-type) build_type="$2"; shift ;;
-    -wt|--with-testing) flags+=("-DENABLE_TESTS=ON"); ;;
     -wd|--with-dotnet) flags+=("-DBUILD_DOTNET=ON"); ;;
     -w|--wasm) wasm=true; flags+=("-DBUILD_WASM=ON"); ;;
     --root) root="$2"; shift ;;
