@@ -1,0 +1,22 @@
+{
+  "files.exclude": {
+    "obj": true,
+    ".cache": true
+  },
+  "cSpell.words": [
+    "codepoint",
+    "KEYCODES",
+    "KEYDOWN",
+    "KEYUP",
+    "Mathf",
+    "OPENGL",
+    "scancode",
+    "WINDOWPOS"
+  ],
+  "files.associations": {
+    "ctime": "cpp",
+    "vector": "cpp",
+    "string": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "enabled"
+}

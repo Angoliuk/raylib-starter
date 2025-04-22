@@ -1,0 +1,26 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -S /Users/stasangoliuk/Desktop/c/raylib -B /Users/stasangoliuk/Desktop/c/raylib/cmake-build-debug
+Building with CMake version: 3.31.4
+WASM: 
+Output type: 
+.Net: 
+CMake Error at cmake/dependencies.cmake:1 (find_package):
+  By not providing "Findraylib.cmake" in CMAKE_MODULE_PATH this project has
+  asked CMake to find a package configuration file provided by "raylib", but
+  CMake did not find one.
+
+  Could not find a package configuration file provided by "raylib" with any
+  of the following names:
+
+    raylibConfig.cmake
+    raylib-config.cmake
+
+  Add the installation prefix of "raylib" to CMAKE_PREFIX_PATH or set
+  "raylib_DIR" to a directory containing one of the above files.  If "raylib"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+Call Stack (most recent call first):
+  cmake/utils.cmake:17 (include)
+  CMakeLists.txt:25 (import)
+
+
+-- Configuring incomplete, errors occurred!
